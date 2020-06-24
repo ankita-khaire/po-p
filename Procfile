@@ -1,0 +1,1 @@
+web: gunicorn organizer.wsgi --pythonpath=organizer --log-file -
