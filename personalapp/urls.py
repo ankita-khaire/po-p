@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import GenericAPIView,NoteAPIView,NoteDetails
+from .views import GenericAPIView,NoteAPIView,NoteDetails, Registration_view
 from .views import login
 # from .views import sample_api
 
@@ -9,5 +9,5 @@ urlpatterns = [
     path('detail/<int:id>/', NoteDetails.as_view()),
     path('generic/note/<int:id>/', GenericAPIView.as_view()),
     path('api/login', login),
-    # path('api/sampleapi', sample_api)
+    path('register/', Registration_view,name="register"),
 ]
