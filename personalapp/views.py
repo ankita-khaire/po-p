@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from .models import Note
+from .models import Account
 from .serializers import NoteSerializer
+from .serializers import RegistrationSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,6 +25,7 @@ from rest_framework.status import (
 # from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
@@ -39,12 +42,21 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
                     status=HTTP_200_OK)
+                    
 
-# @csrf_exempt
-# @api_view(["GET"])
-# def sample_api(request):
-#     data = {'sample_data': 123}
-#     return Response(data, status=HTTP_200_OK)                    
+@api_view(['POST'])
+def Registration_view(request):
+    if request.method=='POST':
+        serializer=RegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            account=serializer.save()
+            data['response']="successfully registered new user."
+            data['email']=account.email
+            data['username']=account.username
+        else:
+            data=serializer.errors
+        return Response(data)      
 
 
 
