@@ -21,12 +21,24 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
-# from rest_framework.authentication import SessionAuthentication,BasicAuthentication
-# from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
-@csrf_exempt
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def Registration_view(request):
+    if request.method=='POST':
+        serializer=RegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            account=serializer.save()
+            data['response']="successfully registered new user."
+            data['email']=account.email
+            data['username']=account.username
+        else:
+            data=serializer.errors
+        return Response(data)     
+
 @api_view(["POST"])
 @permission_classes((AllowAny,))
 def login(request):
@@ -42,50 +54,14 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
                     status=HTTP_200_OK)
+
+
                     
-
-@api_view(['POST'])
-def Registration_view(request):
-    if request.method=='POST':
-        serializer=RegistrationSerializer(data=request.data)
-        data = {}
-        if serializer.is_valid():
-            account=serializer.save()
-            data['response']="successfully registered new user."
-            data['email']=account.email
-            data['username']=account.username
-        else:
-            data=serializer.errors
-        return Response(data)      
-
-
-
 # Create your views here.
 
-class GenericAPIView(generics.GenericAPIView, mixins.ListModelMixin,mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,mixins.DestroyModelMixin):
-    serializer_class=NoteSerializer
-    queryset=Note.objects.all()
-    lookup_field='id'
-    # authentication_classes=[SessionAuthentication,BasicAuthentication]
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
-
-    def get(self,request,id):
-        if id:
-            return self.retrieve(request)
-        else:    
-            return self.list(request)
-
-    def post(self,request):
-        return self.create(request)  
-
-    def put(self,request,id=None):
-        return self.update(request,id) 
-
-    def delete(self,request,id):
-        return self.destroy(request,id)  
-
+@permission_classes((IsAuthenticated,))
 class NoteAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self,request):  
         notes=Note.objects.all()
         serializer=NoteSerializer(notes, many=True)
