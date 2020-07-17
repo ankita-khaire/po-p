@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import django_heroku
+from pymongo import MongoClient
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,11 +95,15 @@ MONGODB_DATABASES = {
     'default': {'name': 'Mydb'}
 }
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'Mydb',
+        'client':'MongoClient(mongodb+srv://Ankita:Python@2020@cluster0.q7v63.mongodb.net/Mydb?retryWrites=true&w=majority)',
+        'db':'client.test',
     }
+
 }
 
 
