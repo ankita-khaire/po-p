@@ -100,8 +100,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'Mydb',
-        'client':'MongoClient(mongodb+srv://Ankita:Python@2020@cluster0.q7v63.mongodb.net/Mydb?retryWrites=true&w=majority)',
-        'db':'client.test',
+        'HOST':'mongodb+srv://Ankita:Python@2020@cluster0.q7v63.mongodb.net/Mydb?retryWrites=true&w=majority',
+        'USER':'Ankita',
+        'PASSWORD':'Python@2020',
     }
 
 }
