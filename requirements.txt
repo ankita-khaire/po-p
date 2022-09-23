@@ -81,7 +81,7 @@ Pillow==7.1.2
 portend==2.6
 prometheus-client==0.7.1
 prompt-toolkit==3.0.4
-protobuf==3.6.1
+protobuf==3.18.3
 psycopg2==2.8.4
 pycodestyle==2.5.0
 Pygments==2.6.1
